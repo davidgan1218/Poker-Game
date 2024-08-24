@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'studybud.urls'
+ROOT_URLCONF = 'poker_game.urls'
 
 TEMPLATES = [
     {
@@ -67,7 +67,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'studybud.wsgi.application'
+WSGI_APPLICATION = 'poker_game.wsgi.application'
 
 
 # Database
