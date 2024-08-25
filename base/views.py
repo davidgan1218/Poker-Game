@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
 
+import random, json
+
 # Create your views here.
 
 # rooms = [
@@ -83,7 +85,15 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-##POKER GAME FUNCTIONALITY INSIDE A SINGLE ROOM
+##POKER GAME FUNCTIONALITY INSIDE A SINGLE ROOM --------------------------------------------------- START
+
+def get_deck():
+    deck = ['1H', '1D', '1C', '1S', '13H', '13D', '13C', '13S', '12H', '12D', '12C', '12S', '11H', '11D', 
+            '11C', '11S', '10H', '10D', '10C', '10S', '9H', '9D', '9C', '9S', '8H', '8D', '8C', '8S', 
+            '7H', '7D', '7C', '7S', '6H', '6D', '6C', '6S', '5H', '5D', '5C', '5S', '4H', '4D', 
+            '4C', '4S', '3H', '3D', '3C', '3S', '2H', '2D', '2C', '2S']
+    random.shuffle(deck)
+    return deck
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
@@ -99,11 +109,14 @@ def room(request, pk):
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
     
-    cards = ['13H', '13D']
+    deck = get_deck()
+    cards = [deck[0], deck[1]]
 
     context = {'room': room, 'room_messages': room_messages,
                'participants': participants, 'player_cards': cards}
     return render(request, 'base/room.html', context)
+
+#END -----------------------------------------------------------------------------
 
 
 def userProfile(request, pk):
