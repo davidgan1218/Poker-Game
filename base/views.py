@@ -83,6 +83,8 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
+##POKER GAME FUNCTIONALITY INSIDE A SINGLE ROOM
+
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -96,9 +98,11 @@ def room(request, pk):
         )
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
+    
+    cards = ['13H', '13D']
 
     context = {'room': room, 'room_messages': room_messages,
-               'participants': participants}
+               'participants': participants, 'player_cards': cards}
     return render(request, 'base/room.html', context)
 
 
