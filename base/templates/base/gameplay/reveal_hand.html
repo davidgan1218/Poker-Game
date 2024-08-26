@@ -1,0 +1,51 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% block content %}
+<main class="profile-page layout layout--2">
+    <div class="container">
+      <!-- Room Start -->
+      <div style="text-align: center;">
+        <!-- River Cards -->
+        <img src="{% static 'images/cardDeck/' %}{{ room.card1 }}.png" alt="card" style="width: 70px; height: auto;">
+        <img src="{% static 'images/cardDeck/' %}{{ room.card2 }}.png" alt="card" style="width: 70px; height: auto;">
+        <img src="{% static 'images/cardDeck/' %}{{ room.card3 }}.png" alt="card" style="width: 70px; height: auto;">
+        <img src="{% static 'images/cardDeck/' %}{{ room.card4 }}.png" alt="card" style="width: 70px; height: auto;">
+        <img src="{% static 'images/cardDeck/' %}{{ room.card5 }}.png" alt="card" style="width: 70px; height: auto;">
+        <hr>
+
+        <!-- User Cards -->
+        <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="margin-top:70px; width:70px; height: auto;">
+        <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
+        <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
+        <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
+
+        <h1>You have a {{ best_hand_text }}.</h1>
+        <h1>Hand strength is: {{ hand_strength }}</h1>
+       
+
+        </form>
+      </div>
+      <!-- Room End -->
+  
+      <!--   Start -->
+      <div class="participants">
+        <h3 class="participants__top">Participants <span>({{participants.count}} Joined)</span></h3>
+        <div class="participants__list scroll">
+          {% for user in participants %}
+          <a href="{%  url 'user-profile' user.id %}" class="participant">
+            <div class="avatar avatar--medium">
+              <img src="{{user.avatar.url}}" />
+            </div>
+            <p>
+              {{user.name}}
+              <span>@{{user.username}}</span>
+            </p>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      <!--  End -->
+    </div>
+  </main>
+{% endblock content %}

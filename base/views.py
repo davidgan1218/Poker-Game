@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
 
+from .evaluate_hands import *
+
 import random, json
 
 # Create your views here.
@@ -118,6 +120,7 @@ def room(request, pk):
     user = request.user
     user.card1 = cards[0]
     user.card2 = cards[1]
+    user.hand_strength = 0
     user.save()
     room.save()
 
@@ -200,16 +203,21 @@ def reveal_hand(request, pk):
         user.save()
         room.save()
         
+        cards = [user.card1, user.card2, room.card1, room.card2, room.card3, room.card4, room.card5]
+        all_hands = get_hands(cards) #get all 7 choose 2 = 21 possible hands
         
+        best_hand = [0,0,[]]
         
-        deck = json.loads(room.deck)
-        room.card4 = deck[0]
-        deck = deck[1:]
-        room.deck = json.dumps(deck)
-        room.save() 
+        for hand in all_hands:
+            cur_hand = evaluate(hand)
+            best_hand = compare_hand(best_hand, cur_hand)
         
-        context = {'room': room, 'pot_size': room.pot_size,'chip_count': user.chip_count}
-        return render(request, 'base/gameplay/turn.html', context)
+        user.hand_strength = best_hand[0]
+        user.save()
+        best_hand_text = translate(best_hand[0])
+        context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': user.hand_strength,
+                   'pot_size': room.pot_size, 'chip_count': user.chip_count}
+        return render(request, 'base/gameplay/reveal_hand.html', context)
     
     return redirect('home')
 

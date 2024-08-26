@@ -21,10 +21,10 @@
         <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
        
         <!-- Bet Button -->
-        <form method="post" action="{% url 'turn' pk=room.id %}" style="margin-top:20px;">
+        <form method="post" action="{% url 'reveal_hand' pk=room.id %}" style="margin-top:20px;">
           {% csrf_token %}
           <label for="bet_amount">Bet Amount: </label>
-          <input type="number" id="bet_amount" name="bet_amount" min="1" step="1" required>
+          <input type="number" id="bet_amount" name="bet_amount" min="0" step="1" required>
           <button type="submit">Place Bet</button>
         </form>
   

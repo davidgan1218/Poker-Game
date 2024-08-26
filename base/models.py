@@ -9,6 +9,7 @@ class User(AbstractUser):
     chip_count = models.IntegerField(default=5000)
     card1 = models.TextField(max_length=5, null=True)
     card2 = models.TextField(max_length=5, null=True)
+    hand_strength = models.IntegerField(default=0) #
 
     avatar = models.ImageField(null=True, default="avatar.svg")
 
@@ -28,8 +29,7 @@ class Room(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    participants = models.ManyToManyField(
-        User, related_name='participants', blank=True)
+    participants = models.ManyToManyField(User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     pot_size = models.IntegerField(default=0)
