@@ -6,9 +6,10 @@
   <div class="container">
     <!-- Room Start -->
     <div style="text-align: center;">
-      {% for card in player_cards %}
-        <img src="{% static 'images/cardDeck/' %}{{ card }}.png" alt="card" style="width: 70px; height: auto;">
-      {% endfor %}
+      <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="width: 70px; height: auto;">
+      <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
+      <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
+      <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
 
       <!-- Bet Button -->
       <form method="post" action="{% url 'flop' pk=room.id %}" style="margin-top:20px;">
@@ -18,12 +19,13 @@
         <button type="submit">Place Bet</button>
       </form>
 
-      <form method="post" action="{% url 'room' pk=room.id %}" style="margin-top:10px;">
+      <!-- Fold Button -->
+      <form method="post" action="{% url 'fold' %}" style="margin-top:10px;">
         {% csrf_token %}
         <button type="submit">Fold</button>
       
       </form>
-      <h1>Chip Count: {{ request.user.username }}</h1>
+      
     </div>
     <!-- Room End -->
 

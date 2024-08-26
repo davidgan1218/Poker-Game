@@ -112,17 +112,51 @@ def room(request, pk):
     
     deck = get_deck()
     cards = [deck[0], deck[1]]
+    deck = deck[2:]
+    room.deck=json.dumps(deck)
+    user = request.user
+    user.card1 = cards[0]
+    user.card2 = cards[1]
+    user.save()
+    room.save()
 
-    context = {'room': room, 'room_messages': room_messages,
+    context = {'pot_size': room.pot_size,'chip_count': user.chip_count, 'room': room, 'room_messages': room_messages,
                'participants': participants, 'player_cards': cards}
     return render(request, 'base/room.html', context)
 
 def flop(request, pk):
     if request.method == "POST":
-        bet_amount = request.POST.get('bet_amount')
+        bet_amount = int(request.POST.get('bet_amount'))
+        room = Room.objects.get(id=pk)
+        user=request.user
+        user.chip_count -= bet_amount
+        room.pot_size += bet_amount
+        user.save()
+        room.save()
         
-        context = {'bet_amount': bet_amount}
+        deck = json.loads(room.deck)
+        room.card1 = deck[0]
+        room.card2 = deck[1]
+        room.card3 = deck[2]
+        deck = deck[3:]
+        room.deck = json.dumps(deck)
+        room.save() 
+        
+        context = {'room': room, 'pot_size': room.pot_size,'chip_count': user.chip_count}
         return render(request, 'base/gameplay/flop.html', context)
+    
+    return redirect('home')
+
+def turn(request, pk):
+    if request.method == 'POST':
+        context = {}
+        return render(request, 'base/gameplay/turn.html', context)
+    
+    return redirect('home')
+
+def fold(request):
+    return redirect('home')
+
 
 #END -----------------------------------------------------------------------------
 

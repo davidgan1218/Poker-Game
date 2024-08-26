@@ -6,6 +6,9 @@ class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
+    chip_count = models.IntegerField(default=5000)
+    card1 = models.TextField(max_length=5, null=True)
+    card2 = models.TextField(max_length=5, null=True)
 
     avatar = models.ImageField(null=True, default="avatar.svg")
 
@@ -29,6 +32,14 @@ class Room(models.Model):
         User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    pot_size = models.IntegerField(default=0)
+    card1 = models.TextField(max_length=5, null=True)
+    card2 = models.TextField(max_length=5, null=True)
+    card3 = models.TextField(max_length=5, null=True)
+    card4 = models.TextField(max_length=5, null=True)
+    card5 = models.TextField(max_length=5, null=True)
+    
+    deck=models.CharField(max_length=512, null=True)
 
     class Meta:
         ordering = ['-updated', '-created']

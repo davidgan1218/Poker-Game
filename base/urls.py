@@ -9,6 +9,8 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('room/<str:pk>/', views.room, name="room"),
     path('flop/<str:pk>/', views.flop, name="flop"),
+    path('turn/<str:pk>/', views.turn, name="turn"),
+    path('fold/', views.fold, name="fold"),
     
     
     
