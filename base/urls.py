@@ -10,6 +10,8 @@ urlpatterns = [
     path('room/<str:pk>/', views.room, name="room"),
     path('flop/<str:pk>/', views.flop, name="flop"),
     path('turn/<str:pk>/', views.turn, name="turn"),
+    path('river/<str:pk>/', views.river, name="river"),
+    path('reveal_hand/<str:pk>/', views.reveal_hand, name="reveal_hand"),
     path('fold/', views.fold, name="fold"),
     
     

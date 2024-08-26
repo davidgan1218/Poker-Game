@@ -114,6 +114,7 @@ def room(request, pk):
     cards = [deck[0], deck[1]]
     deck = deck[2:]
     room.deck=json.dumps(deck)
+    room.pot_size = 0
     user = request.user
     user.card1 = cards[0]
     user.card2 = cards[1]
@@ -148,8 +149,66 @@ def flop(request, pk):
     return redirect('home')
 
 def turn(request, pk):
-    if request.method == 'POST':
-        context = {}
+    if request.method == "POST":
+        bet_amount = int(request.POST.get('bet_amount'))
+        room = Room.objects.get(id=pk)
+        user=request.user
+        user.chip_count -= bet_amount
+        room.pot_size += bet_amount
+        user.save()
+        room.save()
+        
+        deck = json.loads(room.deck)
+        room.card4 = deck[0]
+        deck = deck[1:]
+        room.deck = json.dumps(deck)
+        room.save() 
+        
+        context = {'room': room, 'pot_size': room.pot_size,'chip_count': user.chip_count}
+        return render(request, 'base/gameplay/turn.html', context)
+    
+    return redirect('home')
+
+def river(request, pk):
+    if request.method == "POST":
+        bet_amount = int(request.POST.get('bet_amount'))
+        room = Room.objects.get(id=pk)
+        user=request.user
+        user.chip_count -= bet_amount
+        room.pot_size += bet_amount
+        user.save()
+        room.save()
+        
+        deck = json.loads(room.deck)
+        room.card5 = deck[0]
+        deck = deck[1:]
+        room.deck = json.dumps(deck)
+        room.save() 
+        
+        context = {'room': room, 'pot_size': room.pot_size,'chip_count': user.chip_count}
+        return render(request, 'base/gameplay/river.html', context)
+    
+    return redirect('home')    
+
+def reveal_hand(request, pk):
+    if request.method == "POST":
+        bet_amount = int(request.POST.get('bet_amount'))
+        room = Room.objects.get(id=pk)
+        user=request.user
+        user.chip_count -= bet_amount
+        room.pot_size += bet_amount
+        user.save()
+        room.save()
+        
+        
+        
+        deck = json.loads(room.deck)
+        room.card4 = deck[0]
+        deck = deck[1:]
+        room.deck = json.dumps(deck)
+        room.save() 
+        
+        context = {'room': room, 'pot_size': room.pot_size,'chip_count': user.chip_count}
         return render(request, 'base/gameplay/turn.html', context)
     
     return redirect('home')
