@@ -90,8 +90,8 @@ def home(request):
 ##POKER GAME FUNCTIONALITY INSIDE A SINGLE ROOM --------------------------------------------------- START
 
 def get_deck():
-    deck = ['1H', '1D', '1C', '1S', '13H', '13D', '13C', '13S', '12H', '12D', '12C', '12S', '11H', '11D', 
-            '11C', '11S', '10H', '10D', '10C', '10S', '9H', '9D', '9C', '9S', '8H', '8D', '8C', '8S', 
+    deck = ['AH', 'AD', 'AC', 'AS', 'KH', 'KD', 'KC', 'KS', 'QH', 'QD', 'QC', 'QS', 'JH', 'JD', 
+            'JC', 'JS', 'TH', 'TD', 'TC', 'TS', '9H', '9D', '9C', '9S', '8H', '8D', '8C', '8S', 
             '7H', '7D', '7C', '7S', '6H', '6D', '6C', '6S', '5H', '5D', '5C', '5S', '4H', '4D', 
             '4C', '4S', '3H', '3D', '3C', '3S', '2H', '2D', '2C', '2S']
     random.shuffle(deck)
@@ -215,8 +215,9 @@ def reveal_hand(request, pk):
         user.hand_strength = best_hand[0]
         user.save()
         best_hand_text = translate(best_hand[0])
+        best_hand_identifier = best_hand[1]
         context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': user.hand_strength,
-                   'pot_size': room.pot_size, 'chip_count': user.chip_count}
+                   'best_hand_identifier': best_hand_identifier,'pot_size': room.pot_size, 'chip_count': user.chip_count}
         return render(request, 'base/gameplay/reveal_hand.html', context)
     
     return redirect('home')

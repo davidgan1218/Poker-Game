@@ -8,7 +8,7 @@ def Most_Common(lst):
 
 #gets card value from  a hand. converts A to 14,  is_seq function will convert the 14 to a 1 when necessary to evaluate A 2 3 4 5 straights
 def convert_to_nums(hand):
-    nums = {'1': 14}
+    nums = {'T':10, 'J':11, 'Q':12, 'K':13, 'A': 14}
     for x in range(len(hand)):
         if (hand[x][0]) in nums.keys():
             hand[x] = str(nums[hand[x][0]]) + hand[x][1]
@@ -105,7 +105,7 @@ def is_twopair(h):
  data = Counter(h)
  a, b = data.most_common(1)[0], data.most_common(2)[-1]
  if str(a[1]) == '2' and str(b[1]) == '2':
-  print (a[0], b[0])
+#   print (a[0], b[0])
   return True, max(int(a[0]), int(b[0]))
  return False
 
@@ -142,6 +142,7 @@ def get_high(h):
 def get_hands(cards):
     l = list(itertools.combinations(cards, 5))
     r = [list(a) for a in l]
+    print(r)
     return r
 
 def evaluate(hand):

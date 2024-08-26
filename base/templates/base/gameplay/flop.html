@@ -28,7 +28,7 @@
         </form>
   
         <!-- Fold Button -->
-        <form method="post" action="{% url 'fold' %}" style="margin-top:10px;">
+        <form method="get" action="{% url 'fold' %}" style="margin-top:10px;">
           {% csrf_token %}
           <button type="submit">Fold</button>
         

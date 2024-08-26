@@ -21,7 +21,12 @@
         <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
 
         <h1>You have a {{ best_hand_text }}.</h1>
-        <h1>Hand strength is: {{ hand_strength }}</h1>
+        <h1>Identifier: {{ best_hand_identifier }}</h1>
+        <h1>Hand strength is: {{ hand_strength }}.</h1>
+
+        <form action="{% url 'room' room.id %}" method="get">
+            <button style="margin-top: 80px;" type="submit">Play another round.</button>
+        </form>
        
 
         </form>
