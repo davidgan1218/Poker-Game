@@ -95,6 +95,7 @@ def get_deck():
     random.shuffle(deck)
     return deck
 
+
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -115,6 +116,13 @@ def room(request, pk):
     context = {'room': room, 'room_messages': room_messages,
                'participants': participants, 'player_cards': cards}
     return render(request, 'base/room.html', context)
+
+def flop(request, pk):
+    if request.method == "POST":
+        bet_amount = request.POST.get('bet_amount')
+        
+        context = {'bet_amount': bet_amount}
+        return render(request, 'base/gameplay/flop.html', context)
 
 #END -----------------------------------------------------------------------------
 
