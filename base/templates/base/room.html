@@ -9,9 +9,20 @@
       
       <form method="get" action="{% url 'preflop' room.id %}" style="margin-top:10px;">
         {% csrf_token %}
-        <button type="submit" style="background-color: green;">Start Game</button>
-      
-      </form>
+        <button type="submit" style="
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            padding: 20px 40px; /* Larger padding */
+            font-size: 18px; /* Larger text size */
+            border: none; /* Remove border */
+            border-radius: 12px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+        " onmouseover="this.style.backgroundColor='#45a049'" onmouseout="this.style.backgroundColor='#4CAF50'">
+            Start Game
+        </button>
+    </form>
       
       
     </div>
