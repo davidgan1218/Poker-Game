@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('', views.home, name="home"),
     path('room/<str:pk>/', views.room, name="room"),
+    path('preflop/<str:pk>/', views.preflop, name="preflop"),
     path('flop/<str:pk>/', views.flop, name="flop"),
     path('turn/<str:pk>/', views.turn, name="turn"),
     path('river/<str:pk>/', views.river, name="river"),

@@ -112,6 +112,14 @@ def room(request, pk):
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
     
+    context={'room_messages': room_messages,
+               'participants': participants, 'room': room}
+    return render(request, 'base/room.html', context)
+
+def preflop(request, pk):
+    room = Room.objects.get(id=pk)
+    room_messages = room.message_set.all()
+    participants = room.participants.all()
     deck = get_deck()
     cards = [deck[0], deck[1]]
     deck = deck[2:]
@@ -126,7 +134,8 @@ def room(request, pk):
 
     context = {'pot_size': room.pot_size,'chip_count': user.chip_count, 'room': room, 'room_messages': room_messages,
                'participants': participants, 'player_cards': cards}
-    return render(request, 'base/room.html', context)
+    
+    return render(request, 'base/preflop.html', context) 
 
 def flop(request, pk):
     if request.method == "POST":
@@ -216,6 +225,11 @@ def reveal_hand(request, pk):
         user.save()
         best_hand_text = translate(best_hand[0])
         best_hand_identifier = best_hand[1]
+        
+        # need to implement logic to compare best hands of everybody
+        winner = user
+        winner.chip_count += room.pot_size
+        winner.save()
         context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': user.hand_strength,
                    'best_hand_identifier': best_hand_identifier,'pot_size': room.pot_size, 'chip_count': user.chip_count}
         return render(request, 'base/gameplay/reveal_hand.html', context)

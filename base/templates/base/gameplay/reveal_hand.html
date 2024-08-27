@@ -18,7 +18,7 @@
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="margin-top:70px; width:70px; height: auto;">
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
         <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
-        <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
+        <h1 style="text-align: center; margin-top: 8px;">New Chip Count: {{ chip_count }}</h1>
 
         <h1>You have a {{ best_hand_text }}.</h1>
         <h1>Identifier: {{ best_hand_identifier }}</h1>
