@@ -13,7 +13,7 @@ urlpatterns = [
     path('turn/<str:pk>/', views.turn, name="turn"),
     path('river/<str:pk>/', views.river, name="river"),
     path('reveal_hand/<str:pk>/', views.reveal_hand, name="reveal_hand"),
-    path('fold/', views.fold, name="fold"),
+    path('fold/<str:pk>/', views.fold, name="fold"),
     
     
     

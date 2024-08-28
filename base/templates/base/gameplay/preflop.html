@@ -6,6 +6,8 @@
   <div class="container">
     <!-- Room Start -->
     <div style="text-align: center;">
+
+      <!-- User Cards -->
       <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="width: 70px; height: auto;">
       <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
       <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
@@ -20,7 +22,7 @@
       </form>
 
       <!-- Fold Button -->
-      <form method="get" action="{% url 'fold' %}" style="margin-top:10px;">
+      <form method="get" action="{% url 'fold' room.id %}" style="margin-top:10px;">
         {% csrf_token %}
         <button type="submit">Fold</button>
       

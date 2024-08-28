@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
+from django.urls import reverse
 
 from .evaluate_hands import *
 
@@ -135,7 +136,7 @@ def preflop(request, pk):
     context = {'pot_size': room.pot_size,'chip_count': user.chip_count, 'room': room, 'room_messages': room_messages,
                'participants': participants, 'player_cards': cards}
     
-    return render(request, 'base/preflop.html', context) 
+    return render(request, 'base/gameplay/preflop.html', context) 
 
 def flop(request, pk):
     if request.method == "POST":
@@ -236,8 +237,12 @@ def reveal_hand(request, pk):
     
     return redirect('home')
 
-def fold(request):
-    return redirect('home')
+def fold(request, pk):
+    user = request.user
+    room = Room.objects.get(id=pk)
+    url = reverse('room', args=[pk])
+    # need to add in player who doesn't fold gains chips in pot
+    return redirect(url)
 
 
 #END -----------------------------------------------------------------------------
