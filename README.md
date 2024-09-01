@@ -16,5 +16,7 @@ This Django Poker Game Project is a work in progress. As of right now, basic pla
 
 6. Fix up chat functionality and participant sidebar.
 
-7. Add in other poker games like Blackjack.
+7. Use React for front-end and just query the Django back-end (will need to use Django REST framework), since Django templates are quite limited.
+
+8. Look into adding in other poker games like Blackjack.
 
