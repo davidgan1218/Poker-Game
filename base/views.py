@@ -250,23 +250,6 @@ def reveal_hand(request, pk):
         
         user.save()
         room.save()
-        # all_hands = get_hands(cards) #get all 7 choose 2 = 21 possible hands
-        
-        # best_hand = [0,0,[]]
-        
-        # for hand in all_hands:
-        #     cur_hand = evaluate(hand)
-        #     best_hand = compare_hand(best_hand, cur_hand)
-        
-        # user.hand_strength = best_hand[0]
-        # user.save()
-        # best_hand_text = translate(best_hand[0])
-        # best_hand_identifier = best_hand[1]
-        
-        # need to implement logic to compare best hands of everybody
-        # winner = user
-        # winner.chip_count += room.pot_size
-        # winner.save()
         context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': hand_strength, 'bot_hand_strength': bot_hand_strength,
                    'best_hand_identifier': best_hand_identifier, 'winner': winner, 'bot_best_hand_text': bot_best_hand_text, 'bot_best_hand_identifier': bot_best_hand_identifier,
                    'pot_size': room.pot_size, 'chip_count': user.chip_count}
@@ -285,6 +268,9 @@ def calculateHand(cards):
 def fold(request, pk):
     user = request.user
     room = Room.objects.get(id=pk)
+    room.bot_chip_count += room.pot_size
+    room.save()
+    user.save()
     url = reverse('room', args=[pk])
     # need to add in player who doesn't fold gains chips in pot
     return redirect(url)
