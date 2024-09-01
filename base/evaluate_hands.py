@@ -198,7 +198,8 @@ def translate(num):
         return "High Card"
 
 
-#best_hand and cur_hand are in format ["hand_type (in number format)", "highest card", exact hand(in list form)], ex. ["Full House", 5, hand]
+# best_hand and cur_hand are in format ["hand_type (in number format)", "highest card", exact hand(in list form)], ex. ["Full House", 5, hand]
+# returns the better hand 
 def compare_hand(best_hand, cur_hand):
     if cur_hand[0] > best_hand[0]:
         return cur_hand
@@ -210,4 +211,17 @@ def compare_hand(best_hand, cur_hand):
         else:
             #In this case, the two hands are the same, doesn't matter which hand gets returned
             return best_hand
+
+# compares hands, returns true if 1 if hand1 better, 0 if hand2 better, -1 if tie
+def compare_hand_bool(hand1, hand2):
+    if hand1[0] > hand2[0]:
+        return 1
+    elif hand1[0] > hand2[0]:
+        return 0
+    else:
+        if hand1[1] > hand2[1]:
+            return 1
+        else:
+            #In this case, the two hands are the same, doesn't matter which hand gets returned
+            return -1
     

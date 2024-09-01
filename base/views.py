@@ -122,13 +122,15 @@ def preflop(request, pk):
     room_messages = room.message_set.all()
     participants = room.participants.all()
     deck = get_deck()
-    cards = [deck[0], deck[1]]
-    deck = deck[2:]
+    cards = [deck[0], deck[1], deck[2], deck[3]]
+    deck = deck[4:]
     room.deck=json.dumps(deck)
     room.pot_size = 0
     user = request.user
     user.card1 = cards[0]
     user.card2 = cards[1]
+    room.bot_card1 = cards[2]
+    room.bot_card2 = cards[3]
     user.hand_strength = 0
     user.save()
     room.save()
@@ -144,7 +146,8 @@ def flop(request, pk):
         room = Room.objects.get(id=pk)
         user=request.user
         user.chip_count -= bet_amount
-        room.pot_size += bet_amount
+        room.bot_chip_count -= bet_amount
+        room.pot_size +=  2 * bet_amount
         user.save()
         room.save()
         
@@ -167,7 +170,8 @@ def turn(request, pk):
         room = Room.objects.get(id=pk)
         user=request.user
         user.chip_count -= bet_amount
-        room.pot_size += bet_amount
+        room.bot_chip_count -= bet_amount
+        room.pot_size +=  2 * bet_amount
         user.save()
         room.save()
         
@@ -188,7 +192,8 @@ def river(request, pk):
         room = Room.objects.get(id=pk)
         user=request.user
         user.chip_count -= bet_amount
-        room.pot_size += bet_amount
+        room.bot_chip_count -= bet_amount
+        room.pot_size +=  2 * bet_amount
         user.save()
         room.save()
         
@@ -209,33 +214,73 @@ def reveal_hand(request, pk):
         room = Room.objects.get(id=pk)
         user=request.user
         user.chip_count -= bet_amount
-        room.pot_size += bet_amount
+        room.bot_chip_count -= bet_amount
+        room.pot_size +=  2 * bet_amount
         user.save()
         room.save()
         
-        cards = [user.card1, user.card2, room.card1, room.card2, room.card3, room.card4, room.card5]
-        all_hands = get_hands(cards) #get all 7 choose 2 = 21 possible hands
+        user_cards = [user.card1, user.card2, room.card1, room.card2, room.card3, room.card4, room.card5]
+        bot_cards = [room.bot_card1, room.bot_card2, room.card1, room.card2, room.card3, room.card4, room.card5]
+        user_hand = calculateHand(user_cards)
+        bot_hand = calculateHand(bot_cards)
         
-        best_hand = [0,0,[]]
+        winner=""
+        hand_strength = user_hand[0]
+        best_hand_text = translate(user_hand[0])
+        best_hand_identifier = user_hand[1]
+        bot_hand_strength = bot_hand[0]
+        bot_best_hand_text = translate(bot_hand[0])
+        bot_best_hand_identifier = bot_hand[1]
+        result = compare_hand_bool(user_hand, bot_hand)
+        if result == 1:
+            # user wins
+            user.chip_count += room.pot_size
+            winner = user.username
+        elif result == 0:
+            #bot wins
+            room.bot_chip_count += room.pot_size
+            winner = "BetSmartBot"
+
+        else:
+            #tie
+            split_pot = room.pot_size // 2
+            user.chip_count += split_pot
+            room.bot_chip_count += split_pot
+            winner = "both players! It's a tie!"
         
-        for hand in all_hands:
-            cur_hand = evaluate(hand)
-            best_hand = compare_hand(best_hand, cur_hand)
-        
-        user.hand_strength = best_hand[0]
         user.save()
-        best_hand_text = translate(best_hand[0])
-        best_hand_identifier = best_hand[1]
+        room.save()
+        # all_hands = get_hands(cards) #get all 7 choose 2 = 21 possible hands
+        
+        # best_hand = [0,0,[]]
+        
+        # for hand in all_hands:
+        #     cur_hand = evaluate(hand)
+        #     best_hand = compare_hand(best_hand, cur_hand)
+        
+        # user.hand_strength = best_hand[0]
+        # user.save()
+        # best_hand_text = translate(best_hand[0])
+        # best_hand_identifier = best_hand[1]
         
         # need to implement logic to compare best hands of everybody
-        winner = user
-        winner.chip_count += room.pot_size
-        winner.save()
-        context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': user.hand_strength,
-                   'best_hand_identifier': best_hand_identifier,'pot_size': room.pot_size, 'chip_count': user.chip_count}
+        # winner = user
+        # winner.chip_count += room.pot_size
+        # winner.save()
+        context = {'room': room, 'best_hand_text': best_hand_text, 'hand_strength': hand_strength, 'bot_hand_strength': bot_hand_strength,
+                   'best_hand_identifier': best_hand_identifier, 'winner': winner, 'bot_best_hand_text': bot_best_hand_text, 'bot_best_hand_identifier': bot_best_hand_identifier,
+                   'pot_size': room.pot_size, 'chip_count': user.chip_count}
         return render(request, 'base/gameplay/reveal_hand.html', context)
     
     return redirect('home')
+
+def calculateHand(cards):
+    all_hands = get_hands(cards) #get all 7 choose 2 = 21 possible hands
+    best_hand = [0,0,[]]
+    for hand in all_hands:
+        cur_hand = evaluate(hand)
+        best_hand = compare_hand(best_hand, cur_hand)
+    return best_hand
 
 def fold(request, pk):
     user = request.user

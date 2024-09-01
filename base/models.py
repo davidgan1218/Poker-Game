@@ -9,7 +9,7 @@ class User(AbstractUser):
     chip_count = models.IntegerField(default=5000)
     card1 = models.TextField(max_length=5, null=True)
     card2 = models.TextField(max_length=5, null=True)
-    hand_strength = models.IntegerField(default=0) #
+    hand_strength = models.IntegerField(default=0)
 
     avatar = models.ImageField(null=True, default="avatar.svg")
 
@@ -38,6 +38,11 @@ class Room(models.Model):
     card3 = models.TextField(max_length=5, null=True)
     card4 = models.TextField(max_length=5, null=True)
     card5 = models.TextField(max_length=5, null=True)
+    
+    bot_card1 = models.TextField(max_length=5, null=True)
+    bot_card2 = models.TextField(max_length=5, null=True)
+    bot_chip_count = models.IntegerField(default=5000)
+    bot_hand_strength = models.IntegerField(default=0)
     
     deck=models.CharField(max_length=512, null=True)
 

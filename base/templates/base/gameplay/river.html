@@ -6,6 +6,16 @@
     <div class="container">
       <!-- Room Start -->
       <div style="text-align: center;">
+
+      <!-- Bot Cards -->
+      <strong><p style="font-size: 18px;">BetSmartBot Cards</p></strong>
+      <h1 style="text-align: center; margin-top: 8px;">BetSmartBot Chip Count: {{ room.bot_chip_count }}</h1>
+      <img src="{% static 'images/cardDeck/backofCard.jpg' %}" alt="card" style="width: 70px; height: auto; margin-top: 10px;">
+      <img src="{% static 'images/cardDeck/backOfCard.jpg' %}" alt="card" style="width: 70px; height: auto;">
+
+      <hr style="margin-top: 50px;">
+
+      <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
         <!-- River Cards -->
         <img src="{% static 'images/cardDeck/' %}{{ room.card1 }}.png" alt="card" style="width: 70px; height: auto;">
         <img src="{% static 'images/cardDeck/' %}{{ room.card2 }}.png" alt="card" style="width: 70px; height: auto;">
@@ -17,7 +27,6 @@
         <!-- User Cards -->
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="margin-top:70px; width:70px; height: auto;">
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
-        <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
         <h1 style="text-align: center; margin-top: 8px;">Chip Count {{ chip_count }}</h1>
        
         <!-- Bet Button -->

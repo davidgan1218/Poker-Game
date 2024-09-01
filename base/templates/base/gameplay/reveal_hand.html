@@ -6,6 +6,15 @@
     <div class="container">
       <!-- Room Start -->
       <div style="text-align: center;">
+      <!-- Bot Cards -->
+      <strong><p style="font-size: 18px;">BetSmartBot Cards</p></strong>
+      <h1 style="text-align: center; margin-top: 8px;">BetSmartBot Chip Count: {{ room.bot_chip_count }}</h1>
+      <img src="{% static 'images/cardDeck/' %}{{ room.bot_card1 }}.png" alt="card" style="width: 70px; height: auto; margin-top: 10px;">
+      <img src="{% static 'images/cardDeck/' %}{{ room.bot_card2 }}.png" alt="card" style="width: 70px; height: auto;">
+
+      <hr style="margin-top: 50px;">
+
+      <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
         <!-- River Cards -->
         <img src="{% static 'images/cardDeck/' %}{{ room.card1 }}.png" alt="card" style="width: 70px; height: auto;">
         <img src="{% static 'images/cardDeck/' %}{{ room.card2 }}.png" alt="card" style="width: 70px; height: auto;">
@@ -17,12 +26,24 @@
         <!-- User Cards -->
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card1 }}.png" alt="card" style="margin-top:70px; width:70px; height: auto;">
         <img src="{% static 'images/cardDeck/' %}{{ request.user.card2 }}.png" alt="card" style="width: 70px; height: auto;">
-        <h1 style="text-align: center; margin-top: 8px;">Pot Size: {{ pot_size }}</h1>
-        <h1 style="text-align: center; margin-top: 8px;">New Chip Count: {{ chip_count }}</h1>
 
         <h1>You have a {{ best_hand_text }}.</h1>
-        <h1>Identifier: {{ best_hand_identifier }}</h1>
+        <h1>Identifier: {{ best_hand_identifier }}.</h1>
         <h1>Hand strength is: {{ hand_strength }}.</h1>
+
+        <br>
+
+        <h1>BetSmartBot has a {{ bot_best_hand_text }}.</h1>
+        <h1>Identifier: {{ bot_best_hand_identifier }}</h1>
+        <h1>Hand strength is: {{ bot_hand_strength }}.</h1>
+
+        <br>
+
+        <h1>The winner is {{ winner }}.</h1>
+
+        <h1>Your new chip count is: {{ user.chip_count }}.</h1>
+        <h1>BetSmartBot's new chip count is: {{ room.bot_chip_count }}.</h1>
+
 
         <form action="{% url 'room' room.id %}" method="get">
             <button style="margin-top: 80px;" type="submit">Play another round.</button>
