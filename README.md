@@ -1,4 +1,4 @@
-This Django Poker Game Project is a work in progress. As of right now, user authentication and login as well as basic gameplay functionality (including dealing cards, evaluating and comparing hands, betting and folding) against a simple bot with static image displays has been achieved.
+This Django Poker Game Project is a work in progress. As of right now, user authentication and login as well as basic gameplay functionality (including dealing cards, evaluating and comparing hands, betting and folding) against a simple bot with static image displays has been achieved. The majority of the logic and backend implementation is in base/views.py.
 
 ![Screenshot of In-Game Play](static/images/screenshot2.png)
 ![Screenshot of End of Hand](static/images/screenshot.png)
