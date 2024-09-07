@@ -98,7 +98,7 @@ def get_deck():
     random.shuffle(deck)
     return deck
 
-
+@login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
@@ -117,8 +117,18 @@ def room(request, pk):
                'participants': participants, 'room': room}
     return render(request, 'base/room.html', context)
 
+@login_required(login_url='login')
 def preflop(request, pk):
     room = Room.objects.get(id=pk)
+    if request.method == 'POST':
+        if 'status' in request.POST:
+            message = Message.objects.create(
+                user=request.user,
+                room=room,
+                body=request.POST.get('body')
+            )
+            room.participants.add(request.user)
+            return redirect('preflop', pk=room.id)
     room_messages = room.message_set.all()
     participants = room.participants.all()
     deck = get_deck()
@@ -140,6 +150,7 @@ def preflop(request, pk):
     
     return render(request, 'base/gameplay/preflop.html', context) 
 
+@login_required(login_url='login')
 def flop(request, pk):
     if request.method == "POST":
         bet_amount = int(request.POST.get('bet_amount'))
@@ -164,6 +175,7 @@ def flop(request, pk):
     
     return redirect('home')
 
+@login_required(login_url='login')
 def turn(request, pk):
     if request.method == "POST":
         bet_amount = int(request.POST.get('bet_amount'))
@@ -186,6 +198,7 @@ def turn(request, pk):
     
     return redirect('home')
 
+@login_required(login_url='login')
 def river(request, pk):
     if request.method == "POST":
         bet_amount = int(request.POST.get('bet_amount'))
@@ -208,6 +221,7 @@ def river(request, pk):
     
     return redirect('home')    
 
+@login_required(login_url='login')
 def reveal_hand(request, pk):
     if request.method == "POST":
         bet_amount = int(request.POST.get('bet_amount'))
@@ -265,6 +279,7 @@ def calculateHand(cards):
         best_hand = compare_hand(best_hand, cur_hand)
     return best_hand
 
+@login_required(login_url='login')
 def fold(request, pk):
     user = request.user
     room = Room.objects.get(id=pk)
